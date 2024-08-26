@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{9f6d4321-00fa-49d6-b6ba-198561760dcc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Public">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source\Private">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source\pch">
+      <UniqueIdentifier>{fcc71f32-ea75-4568-9da2-6e3a057e1af7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\pch\Private">
+      <UniqueIdentifier>{e6f2d6a4-81c7-40ee-8480-79ccffd84d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\pch\Public">
+      <UniqueIdentifier>{a555ea52-b09c-4be4-a4dd-73cebfe68d11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Icons">
+      <UniqueIdentifier>{5940f9b6-ad23-4b55-98de-bab2e94c87dc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Sources\pch.cpp">
+      <Filter>Source\pch\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\WinMain.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Sources\Game.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sources\pch.h">
+      <Filter>Source\pch\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\StructDefinition.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\TypeDefinition.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\ValueDefinition.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Game.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Contents\Icons\DirectXIcon.ico">
+      <Filter>Resources\Icons</Filter>
+    </Image>
+  </ItemGroup>
+</Project>

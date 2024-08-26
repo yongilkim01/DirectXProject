@@ -1,3 +1,12 @@
+# Visual studio
+.vs
+
+# Debug Folder
+Debug
+
+# Library Folder
+Libraries
+
 # Prerequisites
 *.d
 
@@ -30,3 +39,6 @@
 *.exe
 *.out
 *.app
+
+# Solution
+*.sln
