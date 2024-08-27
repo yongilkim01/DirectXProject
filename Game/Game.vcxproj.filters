@@ -28,6 +28,9 @@
     <Filter Include="Resources\Icons">
       <UniqueIdentifier>{5940f9b6-ad23-4b55-98de-bab2e94c87dc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{158351ac-5a82-462f-954d-b193aafd68ff}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\pch.cpp">
@@ -69,5 +72,10 @@
     <Image Include="Contents\Icons\DirectXIcon.ico">
       <Filter>Resources\Icons</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Shaders\Default.hlsl">
+      <Filter>Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

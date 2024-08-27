@@ -16,9 +16,19 @@ private:
 	void RenderEnd();
 
 private:
+	// Render initialize method
 	void CreateDeviceAndSwapChain();
 	void CreateRenderTargetView(); 
 	void SetViewport();
+
+	// Vectex create method
+	void CreateGeometry();
+	void CreateInputLayout();
+
+	// Shader create method
+	void CreateVertexShader();
+	void CreatePiexlShader();
+	void LoadShaderFromFile(const std::wstring& path, const std::string& name, const std::string& version, Microsoft::WRL::ComPtr<ID3DBlob>& blob);
 
 private:
 	HWND m_HWnd;
@@ -36,5 +46,19 @@ private:
 	// Misc
 	D3D11_VIEWPORT m_Viewport = { 0 };
 	float m_ClearColor[4] = { 0.f, 0.f, 0.f, 0.f };
+
+	// Vertex variable
+	std::vector<Vertex> m_Verties;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_VertexBuffer = nullptr;
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_InputLayout = nullptr; // Vertex의 최종 구조 정보를 담는 객체
+
+	// Vertex shader
+	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VertexShader = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> m_VsBlob = nullptr;
+
+	// Pixel shader
+	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PixelShader = nullptr;
+	Microsoft::WRL::ComPtr<ID3DBlob> m_PsBlob = nullptr;
+
 };
 

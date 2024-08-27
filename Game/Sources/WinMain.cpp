@@ -31,15 +31,25 @@ INT CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, INT)
 	return 0;
 }
 
-LRESULT CALLBACK WindowProcess(HWND hWnd, UINT message, WPARAM wparam, LPARAM lparam)
+LRESULT CALLBACK WindowProcess(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	switch (message) {
+	switch (message)
+	{
+	case WM_PAINT:
+	{
+		PAINTSTRUCT ps;
+		HDC hdc = BeginPaint(hWnd, &ps);
+		// TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+		EndPaint(hWnd, &ps);
+	}
+	break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
-
-	return DefWindowProc(hWnd, message, wparam, lparam);
+	return 0;
 }
 
 VOID InitializeVariables() {

@@ -16,6 +16,13 @@ void Game::Init(HWND hwnd)
 	m_HWnd = hwnd;
 
 	CreateDeviceAndSwapChain();
+	CreateRenderTargetView();
+	SetViewport();
+
+	CreateGeometry();
+	CreateVertexShader();
+	CreateInputLayout();
+	CreatePiexlShader();
 }
 
 void Game::Update()
@@ -28,6 +35,27 @@ void Game::Render()
 	RenderBegin();
 
 	// TODO
+	{
+		uint32 stride = sizeof(Vertex);
+		uint32 offset = 0;
+
+		// IA
+		m_DeviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), &stride, &offset);
+		m_DeviceContext->IASetInputLayout(m_InputLayout.Get());
+		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+
+		// VS
+		m_DeviceContext->VSSetShader(m_VertexShader.Get(), nullptr, 0);
+
+		// RS
+
+		// PS
+		m_DeviceContext->PSSetShader(m_PixelShader.Get(), nullptr, 0);
+
+		// OM
+
+		m_DeviceContext->Draw(m_Verties.size(), 0);
+	}
 
 	RenderEnd();
 }
@@ -104,4 +132,80 @@ void Game::SetViewport()
 	m_Viewport.Height = static_cast<float>(m_Height);
 	m_Viewport.MinDepth = 0.f;
 	m_Viewport.MaxDepth = 1.f;
+}
+
+void Game::CreateGeometry()
+{
+	// Vertex data initialize <=== RAM
+	{
+		m_Verties.resize(3);
+
+		m_Verties[0].position = Vec3(-0.5f, -0.5f, 0.f);
+		m_Verties[0].color = Color(1.f, 0.f, 0.f, 1.f);
+		m_Verties[1].position = Vec3(0.f, 0.5f, 0.f);
+		m_Verties[1].color = Color(0.f, 1.f, 0.f, 1.f);
+		m_Verties[2].position = Vec3(0.5f, -0.5f, 0.f);
+		m_Verties[2].color = Color(0.f, 0.f, 1.f, 1.f);
+	}
+
+	// VertexBuffer
+	{
+		D3D11_BUFFER_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.Usage = D3D11_USAGE_IMMUTABLE; // GPU read only
+		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER; // Bind vertex data point
+		desc.ByteWidth = (uint32)(sizeof(Vertex) * m_Verties.size());
+
+		D3D11_SUBRESOURCE_DATA data;
+		ZeroMemory(&data, sizeof(data));
+		data.pSysMem = m_Verties.data();
+
+		m_Device->CreateBuffer(&desc, &data, m_VertexBuffer.GetAddressOf());
+	}
+}
+
+// GPU에게 Vertex 자료형의 구조 생김새를 알려준다.
+void Game::CreateInputLayout()
+{
+	D3D11_INPUT_ELEMENT_DESC layout[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+	};
+
+	const int32 count = sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC);
+	m_Device->CreateInputLayout(layout, count, m_VsBlob->GetBufferPointer(), m_VsBlob->GetBufferSize(), m_InputLayout.GetAddressOf());
+}
+
+void Game::CreateVertexShader()
+{
+	//std::wstring testStr = 
+	LoadShaderFromFile(L"./../Shaders/Default.hlsl", "VS", "vs_5_0", m_VsBlob);
+	HRESULT hr = m_Device->CreateVertexShader(m_VsBlob->GetBufferPointer(), m_VsBlob->GetBufferSize(), nullptr, m_VertexShader.GetAddressOf());
+	CHECK(hr);
+}
+
+void Game::CreatePiexlShader()
+{
+	LoadShaderFromFile(L"./../Shaders/Default.hlsl", "PS", "ps_5_0", m_PsBlob);
+	HRESULT hr = m_Device->CreatePixelShader(m_PsBlob->GetBufferPointer(), m_PsBlob->GetBufferSize(), nullptr, m_PixelShader.GetAddressOf());
+	CHECK(hr);
+}
+
+void Game::LoadShaderFromFile(const std::wstring& path, const std::string& name, const std::string& version, Microsoft::WRL::ComPtr<ID3DBlob>& blob)
+{
+	const uint32 compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION; // 디버그용 | 최적화는 건너뜀
+
+	HRESULT hr = D3DCompileFromFile(
+		path.c_str(),
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE,
+		name.c_str(),
+		version.c_str(),
+		compileFlag,
+		0,
+		blob.GetAddressOf(),
+		nullptr);
+
+	CHECK(hr);
 }
