@@ -1,10 +1,10 @@
 #pragma once
 
-class Game
+class Application
 {
 public:
-	Game();
-	~Game();
+	Application();
+	~Application();
 
 public:
 	void Init(HWND hwnd);
@@ -18,7 +18,7 @@ private:
 private:
 	// Render initialize method
 	void CreateDeviceAndSwapChain();
-	void CreateRenderTargetView(); 
+	void CreateRenderTargetView();
 	void SetViewport();
 
 	// Vectex create method
@@ -61,4 +61,3 @@ private:
 	Microsoft::WRL::ComPtr<ID3DBlob> m_PsBlob = nullptr;
 
 };
-

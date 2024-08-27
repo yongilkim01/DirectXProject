@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Game.h"
+#include "Application.h"
 
 WCHAR			g_WindowClass[MAX_NAME_STRING];
 WCHAR			g_WindowTitle[MAX_NAME_STRING];
@@ -7,7 +7,7 @@ INT				g_WindowWidth;
 INT				g_WindowHeight;
 HICON			g_HIcon;
 HWND			g_HWnd;
-Game			g_Game;
+Application		g_App;
 
 VOID InitializeVariables();
 VOID CreateWindowClass();
@@ -24,7 +24,7 @@ INT CALLBACK WinMain(HINSTANCE, HINSTANCE, LPSTR, INT)
 
 	InitializeWindow();
 
-	g_Game.Init(g_HWnd);
+	g_App.Init(g_HWnd);
 
 	MessageLoop();
 
@@ -100,8 +100,8 @@ VOID MessageLoop() {
 		}
 		else
 		{
-			g_Game.Update();
-			g_Game.Render();
+			g_App.Update();
+			g_App.Render();
 		}
 	}
 }

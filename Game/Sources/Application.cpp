@@ -1,19 +1,22 @@
 #include "pch.h"
-#include "Game.h"
+#include "Application.h"
 
-Game::Game()
+Application::Application()
 {
 
 }
 
-Game::~Game()
+Application::~Application()
 {
 
 }
 
-void Game::Init(HWND hwnd)
+void Application::Init(HWND hwnd)
 {
 	m_HWnd = hwnd;
+
+	m_Width = g_WinSizeX;
+	m_Height = g_WinSizeY;
 
 	CreateDeviceAndSwapChain();
 	CreateRenderTargetView();
@@ -25,12 +28,12 @@ void Game::Init(HWND hwnd)
 	CreatePiexlShader();
 }
 
-void Game::Update()
+void Application::Update()
 {
 
 }
 
-void Game::Render()
+void Application::Render()
 {
 	RenderBegin();
 
@@ -60,20 +63,20 @@ void Game::Render()
 	RenderEnd();
 }
 
-void Game::RenderBegin()
+void Application::RenderBegin()
 {
 	m_DeviceContext->OMSetRenderTargets(1, m_RenderTargetView.GetAddressOf(), nullptr);
 	m_DeviceContext->ClearRenderTargetView(m_RenderTargetView.Get(), m_ClearColor);
 	m_DeviceContext->RSSetViewports(1, &m_Viewport);
 }
 
-void Game::RenderEnd()
+void Application::RenderEnd()
 {
 	HRESULT hr = m_SwapChain->Present(1, 0);
 	CHECK(hr);
 }
 
-void Game::CreateDeviceAndSwapChain()
+void Application::CreateDeviceAndSwapChain()
 {
 	DXGI_SWAP_CHAIN_DESC desc;
 	ZeroMemory(&desc, sizeof(desc));
@@ -112,7 +115,7 @@ void Game::CreateDeviceAndSwapChain()
 	CHECK(hr);
 }
 
-void Game::CreateRenderTargetView()
+void Application::CreateRenderTargetView()
 {
 	HRESULT hr;
 
@@ -124,7 +127,7 @@ void Game::CreateRenderTargetView()
 	CHECK(hr);
 }
 
-void Game::SetViewport()
+void Application::SetViewport()
 {
 	m_Viewport.TopLeftX = 0.f;
 	m_Viewport.TopLeftY = 0.f;
@@ -134,7 +137,7 @@ void Game::SetViewport()
 	m_Viewport.MaxDepth = 1.f;
 }
 
-void Game::CreateGeometry()
+void Application::CreateGeometry()
 {
 	// Vertex data initialize <=== RAM
 	{
@@ -165,7 +168,7 @@ void Game::CreateGeometry()
 }
 
 // GPU에게 Vertex 자료형의 구조 생김새를 알려준다.
-void Game::CreateInputLayout()
+void Application::CreateInputLayout()
 {
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
@@ -177,7 +180,7 @@ void Game::CreateInputLayout()
 	m_Device->CreateInputLayout(layout, count, m_VsBlob->GetBufferPointer(), m_VsBlob->GetBufferSize(), m_InputLayout.GetAddressOf());
 }
 
-void Game::CreateVertexShader()
+void Application::CreateVertexShader()
 {
 	//std::wstring testStr = 
 	LoadShaderFromFile(L"./../Shaders/Default.hlsl", "VS", "vs_5_0", m_VsBlob);
@@ -185,14 +188,14 @@ void Game::CreateVertexShader()
 	CHECK(hr);
 }
 
-void Game::CreatePiexlShader()
+void Application::CreatePiexlShader()
 {
 	LoadShaderFromFile(L"./../Shaders/Default.hlsl", "PS", "ps_5_0", m_PsBlob);
 	HRESULT hr = m_Device->CreatePixelShader(m_PsBlob->GetBufferPointer(), m_PsBlob->GetBufferSize(), nullptr, m_PixelShader.GetAddressOf());
 	CHECK(hr);
 }
 
-void Game::LoadShaderFromFile(const std::wstring& path, const std::string& name, const std::string& version, Microsoft::WRL::ComPtr<ID3DBlob>& blob)
+void Application::LoadShaderFromFile(const std::wstring& path, const std::string& name, const std::string& version, Microsoft::WRL::ComPtr<ID3DBlob>& blob)
 {
 	const uint32 compileFlag = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION; // 디버그용 | 최적화는 건너뜀
 

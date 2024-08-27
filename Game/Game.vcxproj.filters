@@ -39,7 +39,7 @@
     <ClCompile Include="Sources\WinMain.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\Game.cpp">
+    <ClCompile Include="Sources\Application.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,7 +59,7 @@
     <ClInclude Include="Sources\ValueDefinition.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Sources\Game.h">
+    <ClInclude Include="Sources\Application.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
