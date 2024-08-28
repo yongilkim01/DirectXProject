@@ -5,63 +5,65 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source">
-      <UniqueIdentifier>{9f6d4321-00fa-49d6-b6ba-198561760dcc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Public">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Source\Private">
+    <Filter Include="Sources">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Source\pch">
-      <UniqueIdentifier>{fcc71f32-ea75-4568-9da2-6e3a057e1af7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\pch\Private">
-      <UniqueIdentifier>{e6f2d6a4-81c7-40ee-8480-79ccffd84d31}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\pch\Public">
-      <UniqueIdentifier>{a555ea52-b09c-4be4-a4dd-73cebfe68d11}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resources\Icons">
-      <UniqueIdentifier>{5940f9b6-ad23-4b55-98de-bab2e94c87dc}</UniqueIdentifier>
+      <UniqueIdentifier>{8ee4eb3d-ba96-4356-92e5-2f334b6c864a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{158351ac-5a82-462f-954d-b193aafd68ff}</UniqueIdentifier>
+    <Filter Include="Sources\pch">
+      <UniqueIdentifier>{5d2f1596-b6a8-4052-9e4f-9d0721d7ef77}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Headers">
+      <UniqueIdentifier>{6f0933fc-5950-46dc-ad62-29cce8efdf8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Main">
+      <UniqueIdentifier>{bd139371-4c05-4a01-af4d-c5c78620f15c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Shaders">
+      <UniqueIdentifier>{d119b907-52dd-4a9d-b7b3-68ffe766f543}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="framework.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\pch.h">
+      <Filter>Sources\pch</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\StructDefinition.h">
+      <Filter>Sources\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\TypeDefinition.h">
+      <Filter>Sources\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\ValueDefinition.h">
+      <Filter>Sources\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Sources\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Sources\Application.h">
+      <Filter>Sources\Main</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Sources\pch.cpp">
-      <Filter>Source\pch\Private</Filter>
+      <Filter>Sources\pch</Filter>
     </ClCompile>
-    <ClCompile Include="Sources\WinMain.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Game.cpp">
+      <Filter>Sources\Main</Filter>
     </ClCompile>
     <ClCompile Include="Sources\Application.cpp">
-      <Filter>Source</Filter>
+      <Filter>Sources\Main</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Sources\pch.h">
-      <Filter>Source\pch\Public</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\StructDefinition.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\TypeDefinition.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\ValueDefinition.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Sources\Application.h">
-      <Filter>Source</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Game.rc">
@@ -69,13 +71,16 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Contents\Icons\DirectXIcon.ico">
+    <Image Include="Game.ico">
+      <Filter>Resources\Icons</Filter>
+    </Image>
+    <Image Include="small.ico">
       <Filter>Resources\Icons</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\Shaders\Default.hlsl">
-      <Filter>Shaders</Filter>
+      <Filter>Sources\Shaders</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
