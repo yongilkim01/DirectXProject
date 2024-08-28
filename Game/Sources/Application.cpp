@@ -28,11 +28,21 @@ void Application::Init(HWND hwnd)
 	CreatePiexlShader();
 
 	CreateSRV();
+
+	CreateConstantBuffer();
 }
 
 void Application::Update()
 {
+	m_TransformData.offset.x += 0.003f;
+	m_TransformData.offset.y += 0.003f;
 
+	D3D11_MAPPED_SUBRESOURCE subResource;
+	ZeroMemory(&subResource, sizeof(subResource));
+
+	m_DeviceContext->Map(m_ConstantBuffer.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &subResource);
+	std::memcpy(subResource.pData, &m_TransformData, sizeof(m_TransformData));
+	m_DeviceContext->Unmap(m_ConstantBuffer.Get(), 0);
 }
 
 void Application::Render()
@@ -52,6 +62,7 @@ void Application::Render()
 
 		// VS
 		m_DeviceContext->VSSetShader(m_VertexShader.Get(), nullptr, 0);
+		m_DeviceContext->VSSetConstantBuffers(0, 1, m_ConstantBuffer.GetAddressOf());
 
 		// RS
 
@@ -238,6 +249,19 @@ void Application::CreateSRV()
 	CHECK(hr);
 
 	hr = DirectX::CreateShaderResourceView(m_Device.Get(), img.GetImages(), img.GetImageCount(), md, m_ShaderResourceView.GetAddressOf());
+	CHECK(hr);
+}
+
+void Application::CreateConstantBuffer()
+{
+	D3D11_BUFFER_DESC desc;
+	ZeroMemory(&desc, sizeof(desc));
+	desc.Usage = D3D11_USAGE_DYNAMIC; // GPU_Write + GPU_Read
+	desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	desc.ByteWidth = sizeof(TransformData);
+	desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+	HRESULT hr = m_Device->CreateBuffer(&desc, nullptr, m_ConstantBuffer.GetAddressOf());
 	CHECK(hr);
 }
 

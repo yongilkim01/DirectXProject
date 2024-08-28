@@ -29,6 +29,7 @@ private:
 	void CreateVertexShader();
 	void CreatePiexlShader();
 	void CreateSRV();
+	void CreateConstantBuffer();
 	void LoadShaderFromFile(const std::wstring& path, const std::string& name, const std::string& version, Microsoft::WRL::ComPtr<ID3DBlob>& blob);
 
 private:
@@ -65,5 +66,8 @@ private:
 
 	// Shader resource view - using image file cpu -> gpu memory
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_ShaderResourceView = nullptr;
+
+	TransformData m_TransformData;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_ConstantBuffer = nullptr;
 
 };
