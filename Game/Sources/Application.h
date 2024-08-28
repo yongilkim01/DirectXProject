@@ -25,6 +25,11 @@ private:
 	void CreateGeometry();
 	void CreateInputLayout();
 
+	// Rasterizer state method
+	void CreateRasterizerState();
+	void CreateSamplerState();
+	void CreateBlendState();
+
 	// Shader create method
 	void CreateVertexShader();
 	void CreatePiexlShader();
@@ -60,12 +65,21 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VertexShader = nullptr;
 	Microsoft::WRL::ComPtr<ID3DBlob> m_VsBlob = nullptr;
 
+	// RasterizerState
+	Microsoft::WRL::ComPtr<ID3D11RasterizerState> m_RasterizerState = nullptr;
+
 	// Pixel shader
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PixelShader = nullptr;
 	Microsoft::WRL::ComPtr<ID3DBlob> m_PsBlob = nullptr;
 
 	// Shader resource view - using image file cpu -> gpu memory
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_ShaderResourceView = nullptr;
+
+	// Sampler variable
+	Microsoft::WRL::ComPtr<ID3D11SamplerState> m_SamplerState = nullptr;
+
+	// BlendState variable
+	Microsoft::WRL::ComPtr<ID3D11BlendState> m_BlendState = nullptr;
 
 	TransformData m_TransformData;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_ConstantBuffer = nullptr;
