@@ -28,6 +28,7 @@ private:
 	// Shader create method
 	void CreateVertexShader();
 	void CreatePiexlShader();
+	void CreateSRV();
 	void LoadShaderFromFile(const std::wstring& path, const std::string& name, const std::string& version, Microsoft::WRL::ComPtr<ID3DBlob>& blob);
 
 private:
@@ -51,6 +52,8 @@ private:
 	std::vector<Vertex> m_Verties;
 	Microsoft::WRL::ComPtr<ID3D11Buffer> m_VertexBuffer = nullptr;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_InputLayout = nullptr; // Vertex의 최종 구조 정보를 담는 객체
+	std::vector<uint32> m_Indices;
+	Microsoft::WRL::ComPtr<ID3D11Buffer> m_IndexBuffer = nullptr;
 
 	// Vertex shader
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> m_VertexShader = nullptr;
@@ -59,5 +62,8 @@ private:
 	// Pixel shader
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_PixelShader = nullptr;
 	Microsoft::WRL::ComPtr<ID3DBlob> m_PsBlob = nullptr;
+
+	// Shader resource view - using image file cpu -> gpu memory
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_ShaderResourceView = nullptr;
 
 };

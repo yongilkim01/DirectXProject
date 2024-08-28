@@ -26,6 +26,8 @@ void Application::Init(HWND hwnd)
 	CreateVertexShader();
 	CreateInputLayout();
 	CreatePiexlShader();
+
+	CreateSRV();
 }
 
 void Application::Update()
@@ -44,6 +46,7 @@ void Application::Render()
 
 		// IA
 		m_DeviceContext->IASetVertexBuffers(0, 1, m_VertexBuffer.GetAddressOf(), &stride, &offset);
+		m_DeviceContext->IASetIndexBuffer(m_IndexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
 		m_DeviceContext->IASetInputLayout(m_InputLayout.Get());
 		m_DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
@@ -54,10 +57,12 @@ void Application::Render()
 
 		// PS
 		m_DeviceContext->PSSetShader(m_PixelShader.Get(), nullptr, 0);
+		m_DeviceContext->PSSetShaderResources(0, 1, m_ShaderResourceView.GetAddressOf());
 
 		// OM
 
-		m_DeviceContext->Draw(m_Verties.size(), 0);
+		//m_DeviceContext->Draw(m_Verties.size(), 0);
+		m_DeviceContext->DrawIndexed(m_Indices.size(), 0, 0);
 	}
 
 	RenderEnd();
@@ -141,14 +146,20 @@ void Application::CreateGeometry()
 {
 	// Vertex data initialize <=== RAM
 	{
-		m_Verties.resize(3);
+		m_Verties.resize(4);
 
 		m_Verties[0].position = Vec3(-0.5f, -0.5f, 0.f);
-		m_Verties[0].color = Color(1.f, 0.f, 0.f, 1.f);
-		m_Verties[1].position = Vec3(0.f, 0.5f, 0.f);
-		m_Verties[1].color = Color(0.f, 1.f, 0.f, 1.f);
+		m_Verties[0].uv = Vec2(0.f, 1.f);
+		//m_Verties[0].color = Color(1.f, 0.f, 0.f, 1.f);
+		m_Verties[1].position = Vec3(-0.5f, 0.5f, 0.f);
+		m_Verties[1].uv = Vec2(0.f, 0.f);
+		//m_Verties[1].color = Color(0.f, 1.f, 0.f, 1.f);
 		m_Verties[2].position = Vec3(0.5f, -0.5f, 0.f);
-		m_Verties[2].color = Color(0.f, 0.f, 1.f, 1.f);
+		m_Verties[2].uv = Vec2(1.f, 1.f);
+		//m_Verties[2].color = Color(0.f, 0.f, 1.f, 1.f);
+		m_Verties[3].position = Vec3(0.5f, 0.5f, 0.f);
+		m_Verties[3].uv = Vec2(1.f, 0.f);
+		//m_Verties[3].color = Color(0.f, 0.f, 1.f, 1.f);
 	}
 
 	// VertexBuffer
@@ -163,8 +174,31 @@ void Application::CreateGeometry()
 		ZeroMemory(&data, sizeof(data));
 		data.pSysMem = m_Verties.data();
 
-		m_Device->CreateBuffer(&desc, &data, m_VertexBuffer.GetAddressOf());
+		HRESULT hr = m_Device->CreateBuffer(&desc, &data, m_VertexBuffer.GetAddressOf());
+		CHECK(hr);
 	}
+
+	// Index data
+	{
+		m_Indices = { 0, 1, 2, 2, 1, 3 };
+	}
+
+	// Index Buffer
+	{
+		D3D11_BUFFER_DESC desc;
+		ZeroMemory(&desc, sizeof(desc));
+		desc.Usage = D3D11_USAGE_IMMUTABLE; // GPU read only
+		desc.BindFlags = D3D11_BIND_INDEX_BUFFER; // Bind vertex data point
+		desc.ByteWidth = (uint32)(sizeof(uint32) * m_Indices.size());
+
+		D3D11_SUBRESOURCE_DATA data;
+		ZeroMemory(&data, sizeof(data));
+		data.pSysMem = m_Indices.data();
+
+		HRESULT hr = m_Device->CreateBuffer(&desc, &data, m_IndexBuffer.GetAddressOf());
+		CHECK(hr);
+	}
+
 }
 
 // GPU에게 Vertex 자료형의 구조 생김새를 알려준다.
@@ -173,7 +207,7 @@ void Application::CreateInputLayout()
 	D3D11_INPUT_ELEMENT_DESC layout[] =
 	{
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-		{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
 	};
 
 	const int32 count = sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC);
@@ -192,6 +226,18 @@ void Application::CreatePiexlShader()
 {
 	LoadShaderFromFile(L"./../Shaders/Default.hlsl", "PS", "ps_5_0", m_PsBlob);
 	HRESULT hr = m_Device->CreatePixelShader(m_PsBlob->GetBufferPointer(), m_PsBlob->GetBufferSize(), nullptr, m_PixelShader.GetAddressOf());
+	CHECK(hr);
+}
+
+void Application::CreateSRV()
+{
+	DirectX::TexMetadata md;
+	DirectX::ScratchImage img;
+
+	HRESULT hr = DirectX::LoadFromWICFile(L"./../Textures/Skeleton.png", DirectX::WIC_FLAGS_NONE, &md, img);
+	CHECK(hr);
+
+	hr = DirectX::CreateShaderResourceView(m_Device.Get(), img.GetImages(), img.GetImageCount(), md, m_ShaderResourceView.GetAddressOf());
 	CHECK(hr);
 }
 
